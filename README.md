@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TTK-Epay 
 
 A comprehensive client SDK for interacting with the TTK-Epay payment processing API. This library provides a simple interface for managing invoices, processing payments, and generating receipts.
