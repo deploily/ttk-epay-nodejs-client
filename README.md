@@ -16,7 +16,7 @@ A comprehensive client SDK for interacting with the TTK-Epay payment processing 
 ### JavaScript (Node.js)
 
 ```bash
-npm install ttk-epay-nodejs-client
+npm install @deploily/ttk-epay-nodejs-client
 ```
 
 ## Quick Start
@@ -25,7 +25,7 @@ npm install ttk-epay-nodejs-client
 ### JavaScript
 
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -63,7 +63,7 @@ Retrieves a paginated list of invoices.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -93,7 +93,7 @@ Creates a new invoice.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 const { Invoice } = require('ttk-epay-nodejs-client/src/models.js'); // Import from your local models file
 
 // Initialize the client
@@ -140,7 +140,7 @@ Retrieves a specific invoice by its order ID.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -175,7 +175,7 @@ Updates an existing invoice.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -217,7 +217,7 @@ Retrieves a list of payments with optional filtering.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -260,7 +260,7 @@ Generates a PDF receipt for a specific payment.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -300,7 +300,7 @@ Sends a PDF receipt to a specified email address.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client'); 
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
 const client = new ttk_epay();
@@ -342,7 +342,7 @@ Processes a new payment.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client');
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client');
 const { InvoiceDto } = require('ttk-epay-nodejs-client/src/models.js'); // Import from your local models file
 
 // Initialize the client
@@ -404,7 +404,7 @@ Checks the status of a payment.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('ttk-epay-nodejs-client');
+const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client');
 const client = new ttk_epay();
 
 async function checkPaymentStatus() {
