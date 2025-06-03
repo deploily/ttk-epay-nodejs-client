@@ -4,10 +4,8 @@
   "description": "Node.js client for TTK E-Pay payment gateway",
   "main": "src/index.js",
   "files": [
-    "dist",
-    "README.md"
+    "src"
   ],
-  
   "repository": {
     "type": "git",
     "url": "https://github.com/deploily/ttk-epay-nodejs-client"
