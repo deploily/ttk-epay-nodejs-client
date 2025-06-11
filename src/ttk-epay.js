@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { Invoice, InvoiceDto } = require('./models');
 
-const BASE_URL = 'https://pay.deploily.cloud/api/v1';
+const BASE_URL = 'https://pay.demo.deploily.cloud/api/v1';
 
 class ttk_epay {
   constructor(baseUrl = BASE_URL) {
@@ -78,6 +78,14 @@ class ttk_epay {
     });
     return response.data;
   }
+
+  async generate_link(orderId, clientCode) {
+    const response = await this.client.get(`/admin/generate-link/`, {
+      params: { orderID: orderId, clientCode: clientCode }
+    });
+    return response.data;
+    }
 }
+
 
 module.exports = { ttk_epay };
