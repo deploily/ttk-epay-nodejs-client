@@ -1,50 +1,52 @@
 const axios = require('axios');
 const { Invoice, InvoiceDto } = require('./models');
 
-const BASE_URL = 'https://pay.demo.deploily.cloud/api/v1';
 
-class ttk_epay {
-  constructor(baseUrl = BASE_URL) {
+class TtkEpay {
+  constructor(baseUrl, secretKey) {
     this.baseUrl = baseUrl;
+    this.secretKey = secretKey
     this.client = axios.create({
       baseURL: this.baseUrl,
       headers: {
         'Accept': '*/*',
         'Content-Type': 'application/json',
+        'X-Api-Key': this.secretKey,
       },
     });
   }
 
-  async get_invoices(pageNumber = 1, pageSize = 10) {
+  async getInvoices(pageNumber = 1, pageSize = 10) {
     const response = await this.client.get('/admin/invoices', {
       params: { pageNumber, pageSize },
     });
     return response.data;
   }
 
-  async create_invoice(invoiceData) {
+  async createInvoice(invoiceData) {
     const response = await this.client.post('/admin/invoices', invoiceData);
     return response.data;
   }
 
-  async get_invoice_by_order_id(orderId) {
-    const response = await this.client.get(`/admin/invoices/${orderId}`);
+  async getInvoiceById(invoiceId) {
+    const response = await this.client.get(`/admin/invoices/${invoiceId}`);
     return response.data;
   }
 
-  async update_invoice(invoiceId, invoiceData) {
+  async updateInvoice(invoiceId, invoiceData) {
     const response = await this.client.patch(`/admin/invoices/${invoiceId}`, invoiceData);
     return response.data;
   }
-  
-  async generate_link(orderId, clientCode) {
-    const response = await this.client.get(`/admin/generate-link/`,{
+
+  async generateLink(orderId, clientCode) {
+    const response = await this.client.get(`/admin/generate-link/`, {
       params: { orderID: orderId, clientCode: clientCode }
     });
+    
     return response.data;
   }
 
-  async get_payments({ pageNumber, pageSize, satim_order_id, invoice_id, from_date, to_date } = {}) {
+  async getPayments({ pageNumber, pageSize, satim_order_id, invoice_id, from_date, to_date } = {}) {
     const params = {};
     if (pageNumber) params.pageNumber = pageNumber;
     if (pageSize) params.pageSize = pageSize;
@@ -57,7 +59,12 @@ class ttk_epay {
     return response.data;
   }
 
-  async get_pdf_recipt(satim_order_id) {
+  async getPaymentById(paymentId) {
+    const response = await this.client.get(`/admin/payments/${paymentId}`);
+    return response.data;
+  }
+
+  async getPdfRecipt(satim_order_id) {
     const response = await this.client.get('/epayment/generate-pdf', {
       params: { SATIM_ORDER_ID: satim_order_id },
       responseType: 'arraybuffer',
@@ -65,7 +72,7 @@ class ttk_epay {
     return response.data;
   }
 
-  async send_pdf_recipt_mail(satim_order_id, email) {
+  async sendPdfReceiptMail(satim_order_id, email) {
     const response = await this.client.get('/epayment/send-mail', {
       params: { SATIM_ORDER_ID: satim_order_id, EMAIL: email },
     });
@@ -74,17 +81,19 @@ class ttk_epay {
       : response.data.toString();
   }
 
-  async post_payement(paymentData) {
+  async postPayement(paymentData) {
     const response = await this.client.post('/epayment', paymentData);
     return response.data;
   }
 
-  async get_payment_status(satim_order_id) {
+  async getPaymentStatus(satim_order_id) {
     const response = await this.client.get('/epayment', {
       params: { SATIM_ORDER_ID: satim_order_id },
     });
     return response.data;
   }
+
+  
 }
 
-module.exports = { ttk_epay };
+module.exports = { TtkEpay };
