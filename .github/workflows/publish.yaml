@@ -1,8 +1,16 @@
-name: Publish NPM Package
+name: Publish to NPM on main
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+
+permissions:
+  contents: read  # 👀 Required to read repo contents
+
+env:
+  NODE_VERSION: "18"
+  PACKAGE_DIR: "."   # Your package is in the root
 
 jobs:
   build-and-publish:
@@ -12,19 +20,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Install dependencies
+        working-directory: ${{ env.PACKAGE_DIR }}
         run: npm install
 
-      - name: Run build
-        run: npm run build
+      - name: Run tests
+        working-directory: ${{ env.PACKAGE_DIR }}
+        run: npm test
 
       - name: Publish to NPM
+        working-directory: ${{ env.PACKAGE_DIR }}
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
