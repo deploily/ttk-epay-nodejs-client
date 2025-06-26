@@ -1,20 +1,14 @@
-name: Publish to NPM on main
+name: Publish to npm
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: read
-
-env:
-  NODE_VERSION: "18"
-  PACKAGE_DIR: "."
-
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,30 +16,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 18
           registry-url: 'https://registry.npmjs.org/'
 
-      - name: Write .npmrc for npmjs.com
-        run: |
-          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
-
       - name: Install dependencies
-        working-directory: ${{ env.PACKAGE_DIR }}
-        run: npm install
+        run: npm ci
 
-      - name: Run tests
-        working-directory: ${{ env.PACKAGE_DIR }}
-        run: npm test
-
-      - name: Configure npm authentication
-        working-directory: ${{ env.PACKAGE_DIR }}
-        run: echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
+      - name: Authenticate with npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
-          
-      - name: Publish to NPM
-        working-directory: ${{ env.PACKAGE_DIR }}
+          NPM_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+
+      - name: Check npm authentication
+        run: npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+
+      - name: Publish package (scoped)
         run: npm publish --access public
