@@ -24,14 +24,14 @@ jobs:
 
       - name: Authenticate with npm
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_SECRET_TOKEN}" > ~/.npmrc
         env:
-          NPM_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+          NPM_SECRET_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
 
       - name: Check npm authentication
         run: npm whoami
         env:
-          NPM_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+          NPM_SECRET_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
 
       - name: Publish package (scoped)
         run: npm publish --access public
