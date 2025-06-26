@@ -36,5 +36,8 @@
   "jest": {
     "testEnvironment": "node",
     "verbose": true
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
