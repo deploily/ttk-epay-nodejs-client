@@ -38,6 +38,11 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Debug NPM authentication
+        run: npm whoami
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+
       - name: Publish to NPM
         working-directory: ${{ env.PACKAGE_DIR }}
         run: npm publish --access public
