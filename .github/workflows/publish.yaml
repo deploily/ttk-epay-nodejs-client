@@ -6,16 +6,15 @@ on:
       - main
 
 permissions:
-  contents: read  # 👀 Required to read repo contents
+  contents: read
 
 env:
   NODE_VERSION: "18"
-  PACKAGE_DIR: "."   # Your package is in the root
+  PACKAGE_DIR: "."
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,18 +33,12 @@ jobs:
         working-directory: ${{ env.PACKAGE_DIR }}
         run: npm test
 
-      - name: Configure npm
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+      - name: Configure npm authentication
+        working-directory: ${{ env.PACKAGE_DIR }}
+        run: echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to NPM
         working-directory: ${{ env.PACKAGE_DIR }}
         run: npm publish --access public
-
-      # - name: Publish to NPM
-      #   working-directory: ${{ env.PACKAGE_DIR }}
-      #   run: npm publish --access public
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
