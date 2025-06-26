@@ -34,8 +34,18 @@ jobs:
         working-directory: ${{ env.PACKAGE_DIR }}
         run: npm test
 
+      - name: Configure npm
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+
       - name: Publish to NPM
         working-directory: ${{ env.PACKAGE_DIR }}
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+
+      # - name: Publish to NPM
+      #   working-directory: ${{ env.PACKAGE_DIR }}
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
