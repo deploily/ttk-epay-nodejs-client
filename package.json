@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/deploily/ttk-epay-nodejs-client.git"
+    "url": "https://github.com/deploily/ttk-epay-nodejs-client"
   },
   "publisher": "Deploily",
   "scripts": {
