@@ -25,6 +25,13 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org/'
 
+      - name: Write .npmrc for npmjs.com
+        run: |
+          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET_TOKEN }}
+
       - name: Install dependencies
         working-directory: ${{ env.PACKAGE_DIR }}
         run: npm install
