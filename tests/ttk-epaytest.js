@@ -1,11 +1,11 @@
-const { ttk_epay } = require('../src');
+const { TtkEpay } = require('../src');
 
 async function main() {
-  const ttkEpay = new ttk_epay();
+  const ttkEpay = new TtkEpay();
 
   try {
     // Test fetching invoices
-    const invoices = await ttkEpay.get_invoices(1, 10);  
+    const invoices = await ttkEpay.getInvoices(1, 10);
     console.log('Fetched invoices:', invoices);
   } catch (error) {
     console.error('Error fetching invoices:', error.message);
@@ -13,7 +13,7 @@ async function main() {
 
   try {
     // Test creating an invoice
-    const newInvoice = await ttkEpay.create_invoice({  
+    const newInvoice = await ttkEpay.createInvoice({
       amount: 150,
       description: 'Manual test invoice'
     });
@@ -23,16 +23,16 @@ async function main() {
   }
 
   try {
-    // Test getting invoice by order ID
-    const invoice = await ttkEpay.get_invoice_by_order_id('12345');  
-    console.log('Invoice by order ID:', invoice);
+    // Test getting invoice by ID
+    const invoice = await ttkEpay.getInvoiceById('12345');
+    console.log('Invoice by ID:', invoice);
   } catch (error) {
-    console.error('Error fetching invoice by order ID:', error.message);
+    console.error('Error fetching invoice by ID:', error.message);
   }
 
   try {
     // Test payment status
-    const status = await ttkEpay.get_payment_status('12345'); 
+    const status = await ttkEpay.getPaymentStatus('12345');
     console.log('Payment status:', status);
   } catch (error) {
     console.error('Error fetching payment status:', error.message);
@@ -40,7 +40,7 @@ async function main() {
 
   try {
     // Test posting a payment
-    const paymentResponse = await ttkEpay.post_payement({  
+    const paymentResponse = await ttkEpay.postPayement({
       amount: 200,
       method: 'credit_card'
     });

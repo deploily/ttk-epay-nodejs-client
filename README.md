@@ -25,15 +25,15 @@ npm install @deploily/ttk-epay-nodejs-client
 ### JavaScript
 
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 // Example: Get list of invoices
 async function getInvoices() {
   try {
-    const invoices = await client.get_invoices(1, 10);
+    const invoices = await client.getInvoices(1, 10);
     console.log(invoices);
   } catch (error) {
     console.error('Error fetching invoices:', error);
@@ -48,7 +48,7 @@ getInvoices();
 
 ### Admin Operations
 
-#### `get_invoices(page_number=1, page_size=10)`
+#### `getInvoices(page_number=1, page_size=10)`
 
 Retrieves a paginated list of invoices.
 
@@ -63,15 +63,15 @@ Retrieves a paginated list of invoices.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 // Example: Get list of invoices
 async function listInvoices() {
   try {
-    const response = await client.get_invoices(1, 20);
+    const response = await client.getInvoices(1, 20);
     console.log('Raw response:', JSON.stringify(response, null, 2));
   } catch (error) {
     console.error('Error fetching invoices:', error.message);
@@ -81,7 +81,7 @@ async function listInvoices() {
 listInvoices();
 ```
 
-#### `create_invoice(invoice_data)`
+#### `createInvoice(invoice_data)`
 
 Creates a new invoice.
 
@@ -93,11 +93,11 @@ Creates a new invoice.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 const { Invoice } = require('ttk-epay-nodejs-client/src/models.js'); // Import from your local models file
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 async function createNewInvoice() {
   try {
@@ -117,7 +117,7 @@ async function createNewInvoice() {
     });
 
     // Create the invoice
-    const createdInvoice = await client.create_invoice(newInvoice);
+    const createdInvoice = await client.createInvoice(newInvoice);
     console.log(`Created invoice with ID: ${createdInvoice.ID}`);
   } catch (error) {
     console.error('Error creating invoice:', error.message);
@@ -128,29 +128,29 @@ createNewInvoice();
 
 ```
 
-#### `get_invoice_by_order_id(order_id)`
+#### `getInvoiceById(invoice_id)`
 
-Retrieves a specific invoice by its order ID.
+Retrieves a specific invoice by its ID.
 
 **Parameters:**
-- `order_id`: The order ID of the invoice to retrieve
+- `invoice_id`: The ID of the invoice to retrieve
 
 **Returns:** The Invoice object if found
 
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
-async function findInvoiceByOrderId() {
+async function findInvoiceById() {
   try {
-    const orderId = "35";
-    const invoice = await client.get_invoice_by_order_id(orderId);
+    const invoiceId = "35";
+    const invoice = await client.getInvoiceById(invoiceId);
     
-    console.log(`Found invoice - Order ID: ${invoice.ORDER_ID}, Amount: ${invoice.NET_AMOUNT}, Paid: ${invoice.IS_PAID ? 'Yes' : 'No'}`);
+    console.log(`Found invoice -  ID: ${invoice.ID}, Amount: ${invoice.NET_AMOUNT}, Paid: ${invoice.IS_PAID ? 'Yes' : 'No'}`);
     return invoice;
   } catch (error) {
     console.error(`Error finding invoice: ${error.message}`);
@@ -159,10 +159,10 @@ async function findInvoiceByOrderId() {
 }
 
 
-findInvoiceByOrderId();
+findInvoiceById();
 ```
 
-#### `update_invoice(invoice_id, invoice_data)`
+#### `updateInvoice(invoice_id, invoice_data)`
 
 Updates an existing invoice.
 
@@ -175,21 +175,21 @@ Updates an existing invoice.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 async function updateExistingInvoice() {
   try {
-    const orderId = "35";
-    const invoice = await client.get_invoice_by_order_id(orderId);
+    const invoiceId = "35";
+    const invoice = await client.getInvoiceById(invoiceId);
     
     // Update invoice details
     invoice.NET_AMOUNT = 1500.00;
     invoice.IS_PAID = true; // Change from No to Yes
     
-    const result = await client.update_invoice(invoice.ID, invoice);
+    const result = await client.updateInvoice(invoice.ID, invoice);
     console.log(`Updated invoice: Amount=${result.NET_AMOUNT}, Paid=${result.IS_PAID ? 'Yes' : 'No'}`);
     return result;
   } catch (error) {
@@ -200,7 +200,7 @@ async function updateExistingInvoice() {
 updateExistingInvoice();
 ```
 
-#### `get_payments(options)`
+#### `getPayments(options)`
 
 Retrieves a list of payments with optional filtering.
 
@@ -217,10 +217,10 @@ Retrieves a list of payments with optional filtering.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 async function getRecentPayments() {
   const endDate = new Date().toISOString();
@@ -229,7 +229,7 @@ async function getRecentPayments() {
   
   try {
     // Fetching payments from the last 30 days
-    const payments = await client.get_payments({
+    const payments = await client.getPayments({
       pageSize: 50,
       from_date: startDate.toISOString(),
       to_date: endDate
@@ -246,9 +246,85 @@ async function getRecentPayments() {
 getRecentPayments();
 ```
 
+#### `getPayementById(payement_id)`
+
+Retrieves a specific payement by its ID.
+
+**Parameters:**
+- `payement_id`: The ID of the payement to retrieve
+
+**Returns:** The payement object if found
+
+
+**Example (JavaScript):**
+```javascript
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
+
+// Initialize the client
+const client = new TtkEpay();
+
+async function findPayementById() {
+  
+  try {
+    const paymentId = "2";
+    const payment = await client.getPaymentById(paymentId);
+
+    console.log(`payment=== `,payment);
+    console.log(`Found payment -  ID: ${payment.ID}, Amount: ${payment.NET_AMOUNT}, Paid: ${payment.IS_PAID ? 'Yes' : 'No'}`);
+
+    return payment;
+  } catch (error) {
+    console.error(`Error finding payment: ${error.message}`);
+    return null;
+  }
+}
+
+
+findInvoiceById();
+```
+
+
+### `generateLink(order_id, client_code)`
+
+Generates a payment link for a specific invoice based on its order ID and client code.
+
+**Parameters:**
+
+* `order_id` (`string`): The unique identifier of the invoice to retrieve.
+* `client_code` (`number`): The client identifier associated with the invoice.
+
+**Returns:** A payment link (string) if successful, or null if an error occurs.
+
+
+**Example (JavaScript):**
+
+```javascript
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client');
+
+// Initialize the client
+const client = new TtkEpay();
+
+async function generateLink(orderId, clientCode) {
+  try {
+    const link = await client.generate_link(orderId, clientCode);
+    console.log(`Generated link:`, link);
+    return link;
+  } catch (error) {
+    console.error(`Failed to generate link: ${error.message}`);
+    return null;
+  }
+}
+
+// Example usage
+generateLink("15", 15);
+```
+
+
+
+
 ### Document Operations
 
-#### `get_pdf_recipt(satim_order_id)`
+#### `getPdfRecipt(satim_order_id)`
 
 Generates a PDF receipt for a specific payment.
 
@@ -260,10 +336,10 @@ Generates a PDF receipt for a specific payment.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 const fs = require('fs');
 
@@ -272,7 +348,7 @@ async function savePdfReceipt() {
   
   try {
     // Fetching the PDF receipt data
-    const pdfData = await client.get_pdf_recipt(satimOrderId);
+    const pdfData = await client.getPdfRecipt(satimOrderId);
     
     // Writing the PDF data to a file
     fs.writeFileSync(`receipt_${satimOrderId}.pdf`, pdfData);
@@ -287,7 +363,7 @@ async function savePdfReceipt() {
 savePdfReceipt();
 ```
 
-#### `send_pdf_recipt_mail(satim_order_id, email)`
+#### `sendPdfReceiptMail(satim_order_id, email)`
 
 Sends a PDF receipt to a specified email address.
 
@@ -300,10 +376,10 @@ Sends a PDF receipt to a specified email address.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client'); 
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client'); 
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 async function emailReceipt() {
   const satimOrderId = "SATIM-12345";
@@ -311,7 +387,7 @@ async function emailReceipt() {
   
   try {
     // Sending the receipt via email
-    const result = await client.send_pdf_recipt_mail(satimOrderId, email);
+    const result = await client.sendPdfReceiptMail(satimOrderId, email);
     
     // Check if the result is in the expected format or status
     if (result) {
@@ -330,7 +406,7 @@ emailReceipt();
 
 ### Payment Operations
 
-#### `post_payement(payment_data)`
+#### `postPayement(payment_data)`
 
 Processes a new payment.
 
@@ -342,11 +418,11 @@ Processes a new payment.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client');
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client');
 const { InvoiceDto } = require('ttk-epay-nodejs-client/src/models.js'); // Import from your local models file
 
 // Initialize the client
-const client = new ttk_epay();
+const client = new TtkEpay();
 
 async function processPayment() {
   // Create payment data with a unique invoice number (using timestamp)
@@ -364,7 +440,7 @@ async function processPayment() {
 
   try {
     // Process the payment
-    const result = await client.post_payement(payment);
+    const result = await client.postPayement(payment);
     
     // Debug the result
     console.log("Full API response:", JSON.stringify(result, null, 2));
@@ -392,7 +468,7 @@ processPayment();
 
 ```
 
-#### `get_payment_status(satim_order_id)`
+#### `getPaymentStatus(satim_order_id)`
 
 Checks the status of a payment.
 
@@ -404,12 +480,12 @@ Checks the status of a payment.
 
 **Example (JavaScript):**
 ```javascript
-const { ttk_epay } = require('@deploily/ttk-epay-nodejs-client');
-const client = new ttk_epay();
+const { TtkEpay } = require('@deploily/ttk-epay-nodejs-client');
+const client = new TtkEpay();
 
 async function checkPaymentStatus() {
   try {
-    const status = await client.get_payment_status("8LmjDNjisi0A5EAAGBYM");
+    const status = await client.getPaymentStatus("8LmjDNjisi0A5EAAGBYM");
     
     if (!status) {
       return { error: "No payment status received" };
@@ -440,6 +516,8 @@ checkPaymentStatus().then(result => {
 });
 
 ```
+
+
 
 ## Data Models
 
@@ -505,20 +583,20 @@ const axios = require('axios');
 
 // Sample client function simulating the API call
 const client = {
-  get_invoice_by_order_id: (orderId) => {
+  getInvoiceById: (invoiceId) => {
     return new Promise((resolve, reject) => {
-      // Simulating a response or error based on the orderId
-      if (orderId === "NON-EXISTENT") {
+      // Simulating a response or error based on the invoiceId
+      if (invoiceId === "NON-EXISTENT") {
         reject(new Error("Invoice not found"));
       } else {
-        resolve({ orderId: orderId, amount: 100 });
+        resolve({ invoiceId: invoiceId, amount: 100 });
       }
     });
   }
 };
 
 // 1. Promise-based error handling using .then() and .catch()
-client.get_invoice_by_order_id("NON-EXISTENT")
+client.getInvoiceById("NON-EXISTENT")
   .then(invoice => {
     console.log("Invoice found:", invoice);
   })
@@ -529,7 +607,7 @@ client.get_invoice_by_order_id("NON-EXISTENT")
 // 2. Async/await error handling with try-catch
 async function fetchInvoice() {
   try {
-    const invoice = await client.get_invoice_by_order_id("NON-EXISTENT");
+    const invoice = await client.getInvoiceById("NON-EXISTENT");
     console.log("Invoice found:", invoice);
   } catch (error) {
     console.error("Error details:", error.message);

@@ -1,13 +1,13 @@
 const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
-const { ttk_epay } = require('../src/ttk-epay');  
+const { TtkEpay } = require('../src/ttk-epay');
 
 describe('TtkEpay', () => {
   let ttkEpay;
   let mock;
 
   beforeEach(() => {
-    ttkEpay = new ttk_epay();  
+    ttkEpay = new TtkEpay();
     mock = new MockAdapter(ttkEpay.client);
   });
 
@@ -22,17 +22,17 @@ describe('TtkEpay', () => {
         total: 0
       }
     };
-    
+
     mock.onGet('/admin/invoices').reply(200, mockResponse);
 
-    const response = await ttkEpay.get_invoices(1, 10);  
+    const response = await ttkEpay.getInvoices(1, 10);
     expect(response).toEqual(mockResponse);
   });
 
   test('should handle error when fetching invoices', async () => {
     mock.onGet('/admin/invoices').reply(500);
 
-    await expect(ttkEpay.get_invoices(1, 10)).rejects.toThrow();  
+    await expect(ttkEpay.getInvoices(1, 10)).rejects.toThrow();
   });
 
   test('should create an invoice successfully', async () => {
@@ -49,7 +49,7 @@ describe('TtkEpay', () => {
 
     mock.onPost('/admin/invoices').reply(200, mockResponse);
 
-    const response = await ttkEpay.create_invoice(invoiceData); 
+    const response = await ttkEpay.createInvoice(invoiceData);
     expect(response).toEqual(mockResponse);
   });
 
@@ -61,28 +61,28 @@ describe('TtkEpay', () => {
 
     mock.onPost('/admin/invoices').reply(400);
 
-    await expect(ttkEpay.create_invoice(invoiceData)).rejects.toThrow();  
+    await expect(ttkEpay.createInvoice(invoiceData)).rejects.toThrow();
   });
 
-  test('should fetch invoice by order ID successfully', async () => {
-    const orderId = '12345';
+  test('should fetch invoice by ID successfully', async () => {
+    const invoiceId = '12345';
     const mockResponse = {
-      orderId: '12345',
+      invoiceId: '12345',
       amount: 100,
       description: 'Test invoice'
     };
 
-    mock.onGet(`/admin/invoices/${orderId}`).reply(200, mockResponse);
+    mock.onGet(`/admin/invoices/${invoiceId}`).reply(200, mockResponse);
 
-    const response = await ttkEpay.get_invoice_by_order_id(orderId);  
+    const response = await ttkEpay.getInvoiceById(invoiceId);
     expect(response).toEqual(mockResponse);
   });
 
-  test('should handle error when fetching invoice by order ID', async () => {
-    const orderId = '12345';
-    mock.onGet(`/admin/invoices/${orderId}`).reply(404);
+  test('should handle error when fetching invoice by ID', async () => {
+    const invoiceId = '12345';
+    mock.onGet(`/admin/invoices/${invoiceId}`).reply(404);
 
-    await expect(ttkEpay.get_invoice_by_order_id(orderId)).rejects.toThrow();  
+    await expect(ttkEpay.getInvoiceById(invoiceId)).rejects.toThrow();
   });
 
   test('should fetch PDF receipt successfully', async () => {
@@ -91,7 +91,7 @@ describe('TtkEpay', () => {
 
     mock.onGet('/epayment/generate-pdf').reply(200, mockResponse);
 
-    const response = await ttkEpay.get_pdf_recipt(satimOrderId);  
+    const response = await ttkEpay.getPdfRecipt(satimOrderId);
     expect(response).toEqual(mockResponse);
   });
 
@@ -99,7 +99,7 @@ describe('TtkEpay', () => {
     const satimOrderId = '12345';
     mock.onGet('/epayment/generate-pdf').reply(500);
 
-    await expect(ttkEpay.get_pdf_recipt(satimOrderId)).rejects.toThrow();  
+    await expect(ttkEpay.getPdfRecipt(satimOrderId)).rejects.toThrow();
   });
 
   test('should send PDF receipt via email successfully', async () => {
@@ -109,7 +109,7 @@ describe('TtkEpay', () => {
 
     mock.onGet('/epayment/send-mail').reply(200, mockResponse);
 
-    const response = await ttkEpay.send_pdf_recipt_mail(satimOrderId, email);  
+    const response = await ttkEpay.sendPdfReceiptMail(satimOrderId, email);
     expect(response).toEqual(mockResponse);
   });
 
@@ -118,7 +118,7 @@ describe('TtkEpay', () => {
     const email = 'test@example.com';
     mock.onGet('/epayment/send-mail').reply(500);
 
-    await expect(ttkEpay.send_pdf_recipt_mail(satimOrderId, email)).rejects.toThrow();  
+    await expect(ttkEpay.sendPdfReceiptMail(satimOrderId, email)).rejects.toThrow();
   });
 
   test('should post payment successfully', async () => {
@@ -135,7 +135,7 @@ describe('TtkEpay', () => {
 
     mock.onPost('/epayment').reply(200, mockResponse);
 
-    const response = await ttkEpay.post_payement(paymentData); 
+    const response = await ttkEpay.postPayement(paymentData);
     expect(response).toEqual(mockResponse);
   });
 
@@ -147,7 +147,7 @@ describe('TtkEpay', () => {
 
     mock.onPost('/epayment').reply(400);
 
-    await expect(ttkEpay.post_payement(paymentData)).rejects.toThrow();  
+    await expect(ttkEpay.postPayement(paymentData)).rejects.toThrow();
   });
 
   test('should fetch payment status successfully', async () => {
@@ -158,7 +158,7 @@ describe('TtkEpay', () => {
 
     mock.onGet('/epayment').reply(200, mockResponse);
 
-    const response = await ttkEpay.get_payment_status(satimOrderId);  
+    const response = await ttkEpay.getPaymentStatus(satimOrderId);
     expect(response).toEqual(mockResponse);
   });
 
@@ -166,6 +166,6 @@ describe('TtkEpay', () => {
     const satimOrderId = '12345';
     mock.onGet('/epayment').reply(500);
 
-    await expect(ttkEpay.get_payment_status(satimOrderId)).rejects.toThrow(); 
+    await expect(ttkEpay.getPaymentStatus(satimOrderId)).rejects.toThrow();
   });
 });
