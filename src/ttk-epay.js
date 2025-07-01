@@ -93,14 +93,6 @@ class TtkEpay {
     });
     return response.data;
   }
-
-  async generate_link(orderId, clientCode) {
-    const response = await this.client.get(`/admin/generate-link/`, {
-      params: { orderID: orderId, clientCode: clientCode }
-    });
-    return response.data;
-    }
 }
 
-
-module.exports = { ttk_epay };
+module.exports = { TtkEpay };
