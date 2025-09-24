@@ -39,9 +39,9 @@ class TtkEpay {
     return response.data;
   }
 
-  async generateLink(orderId, clientCode) {
+  async generateLink(invoiceNumber, clientCode) {
     const response = await this.client.get(`/admin/generate-link/`, {
-      params: { orderID: orderId, clientCode: clientCode }
+      params: { invoiceNumber: invoiceNumber, clientCode: clientCode }
     });
     
     return response.data;
