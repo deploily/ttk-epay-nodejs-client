@@ -40,7 +40,7 @@ class TtkEpay {
   }
 
   async generateLink(invoiceNumber, clientCode) {
-    const response = await this.client.get(`/admin/generate-link/`, {
+    const response = await this.client.get(`/admin/generate-link`, {
       params: { invoiceNumber: invoiceNumber, clientCode: clientCode }
     });
     
